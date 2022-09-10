@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+@*<partial name="_CopyrightHeader"/>*@
+<html lang="en">
+	<head>
+		<partial name="_WebHead"/>
+		@RenderSection("HeadBlock", required: false)
+	</head>
+   <body>
+    <!-- Header Section Start From Here -->
+    <partial name="_WebPageHeader" />
+    <!-- OffCanvas Search End -->
+      
+    <div class="offcanvas-overlay"></div>
+      @RenderBody()
+    
+    <!-- Footer Area Start -->
+    @*<?php include"include/footer.php";?>*@
+    <partial name="_WebFooter" />
+
+    <!-- Footer Area End -->
+    <partial name="_WebScript"/>
+</body>
+</html>

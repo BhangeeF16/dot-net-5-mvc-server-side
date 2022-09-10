@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    ViewData["PageName"] = "Index";
+    ViewData["Category1"] = "Dashboard";
+    //ViewData["Heading"] = "<i class='subheader-icon fal fa-chart-area'></i> Analytics <span class='fw-300'>Dashboard</span>";
+}
+
+
+
+<div id="panel-1" class="panel">
+    <div class="panel-hdr">
+        <h2>Statistics</h2>
+    </div>
+    <div class="panel-container show">
+        <div class="panel-content bg-subtlelight-fade">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="p-3 bg-primary rounded overflow-hidden position-relative text-white mb-g">
+                        <div class="">
+                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                @*@ViewBag.OrderStats.TotalOrders*@
+                                <small class="m-0 l-h-n">Total Orders</small>
+                            </h3>
+                        </div>
+                        <i class="fas fa-arrow-alt-down position-absolute pos-right pos-top opacity-15 mb-n1 mr-n1 fa-rotate-50" style="font-size:4rem"></i>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="p-3 bg-warning-400 rounded overflow-hidden position-relative text-white mb-g">
+                        <div class="">
+                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                @*@ViewBag.OrderStats.InProgressOrders*@
+                                <small class="m-0 l-h-n">In Progress Orders</small>
+                            </h3>
+                        </div>
+                        <i class="@(Settings.Theme.IconPrefix) fa-spinner position-absolute pos-right pos-top opacity-50 mt-3" style="font-size: 4rem;"></i>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="p-3 bg-success-200 rounded overflow-hidden position-relative text-white mb-g">
+                        <div class="">
+                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                @*@ViewBag.OrderStats.CompletedOrders*@
+                                <small class="m-0 l-h-n">Completed Orders</small>
+                            </h3>
+                        </div>
+                        <i class="@(Settings.Theme.IconPrefix) fa-lightbulb position-absolute pos-right pos-bottom opacity-15 mb-n5 mr-n6" style="font-size: 8rem;"></i>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="p-3 bg-info-200 rounded overflow-hidden position-relative text-white mb-g">
+                        <div class="">
+                            <h3 class="display-4 d-block l-h-n m-0 fw-500">
+                                @*@ViewBag.OrderStats.TotalCylinders*@
+                                <small class="m-0 l-h-n">Total Cylinders</small>
+                            </h3>
+                        </div>
+                        <i class="@(Settings.Theme.IconPrefix) fa-globe position-absolute pos-right pos-bottom opacity-15 mb-n1 mr-n4" style="font-size: 6rem;"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section ScriptsBlock {
+    <script type="text/javascript">
+        $(document).ready(function () {
+        });
+    </script>
+}

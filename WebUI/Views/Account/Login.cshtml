@@ -1,0 +1,169 @@
+@{ ViewData["Title"] = "Login";
+    ViewData["PageName"] = "page_login"; }
+@section Header {
+    <link rel="stylesheet" media="screen, print" href="~/css/fa-brands.css">
+}
+
+
+<div class="row m-0 h-100">
+    <div class="hidden-md-down col-md-12 col-lg-6 col-xl-7" style="background: url(/img/backgrounds/loginbg.jpg) no-repeat center; background-size: cover;">
+
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-5">
+        <div class="login d-flex align-items-center py-5 h-100">
+            <div class="container px-4 px-sm-0">
+                <div class="row align-items-center">
+                    <div class="col-sm-12 col-md-8 col-lg-7 m-auto">
+                        <div class="mb-2 text-center w-100">
+                            <a href="/" >
+                                <img src="/img/logo.png" width="200" class="flex-wrap mb-2" alt="logo" aria-roledescription="logo">
+                            </a>
+                        </div>
+                        <div class="card p-4 rounded-plus">
+                            <form action="@Url.Action("Login","Account")" method="POST" id="login-form">
+                            @*<form id="login-form">*@
+                                @Html.AntiForgeryToken()
+                                <div class="form-group">
+                                    @Html.ValidationSummary()
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="username">Email <span class="text-danger">*</span></label>
+                                    <input type="email" id="username" name="Email" class="form-control" placeholder="Email" value="" required>
+                                    <div class="invalid-feedback">No, you missed this one.</div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label" for="password">Password <span class="text-danger">*</span></label>
+                                    <input type="password" id="password" name="password" class="form-control" placeholder="Password" value="" required>
+                                    <div class="invalid-feedback">No, you missed this one.</div>
+                                </div>
+                                <div class="form-group mt-4">
+                                    <button type="submit" class="btn btn-primary btn-block" id="loginBtn"><i class="fal fa-sign-in mr-1"></i> Login</button>
+                                </div>
+                                <div class="row mt-1 mb-3">
+                                    <div class="col-12">
+                                        <div class="float-left mt-1">
+                                            <div class="custom-control custom-checkbox custom-control-inline">
+                                                <input type="checkbox" style="color: #0098d6 !important" class="custom-control-input" name="RememberMe" id="RememberMe" value="true" checked="checked">
+                                                <input type="hidden" name="RememberMe" value="false" />
+                                                <label class="custom-control-label" for="RememberMe" style="color: black !important">Remember me</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr />
+                                <div class="row mt-1">
+                                    <div class="col-12">
+                                        <div class="float-right">
+                                            <a href="/Account/Forgot"><strong> Forgot Password?</strong></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="row auth">
+    <div class="col col-md-6 col-lg-7 hidden-sm-down">
+        <h2 class="fs-xxl fw-500 mt-4 text-white">
+            Welcome To Brandco Inventory Management.-->
+            @*The simplest UI toolkit for developers &amp; programmers*@
+            <!--<small class="h3 fw-400 mt-3 mb-5 text-white">
+                At Brandco are proud of our excellent history of reliable and timely service work in the fire industry. Our goal is simple: to provide fast, professional service at competitive prices.
+                Whether you are starting a new business or just need an inspection, we want to be the fire service company you call first. No job is too large or too small for Brandco. Our highly skilled service team will assess your needs and discuss your options with you.-->
+                @*Presenting you with the next level of innovative UX design and engineering. The most modular toolkit available with over 600+ layout permutations. Experience the simplicity of @Settings.App, everywhere you go!*@
+            <!--</small>
+        </h2>-->
+        @*<a href="#" class="fs-lg fw-500 text-white opacity-70">Learn more &gt;&gt;</a>*@
+        @*<div class="d-sm-flex flex-column align-items-center justify-content-center d-md-block">
+            <div class="px-0 py-1 mt-5 text-white fs-nano opacity-50">
+                Find us on social media
+            </div>
+            <div class="d-flex flex-row opacity-70">
+                <a href="#" class="mr-2 fs-xxl text-white">
+                    <i class="fab fa-facebook-square"></i>
+                </a>
+                <a href="#" class="mr-2 fs-xxl text-white">
+                    <i class="fab fa-twitter-square"></i>
+                </a>
+                <a href="#" class="mr-2 fs-xxl text-white">
+                    <i class="fab fa-google-plus-square"></i>
+                </a>
+                <a href="#" class="mr-2 fs-xxl text-white">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+            </div>
+        </div>*@
+    <!--</div>
+    <div class="col-sm-12 col-md-6 col-lg-5 col-xl-4 ml-auto">
+        <h1 class="text-white fw-300 mb-3 d-sm-block d-md-none">
+            Secure login
+        </h1>
+        <div class="card p-4 rounded-plus bg-faded">
+            @if (ViewBag.WrongPassword == true)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true"><i class="fal fa-times-square"></i></span>
+                    </button>
+                    <strong>Oops!</strong> Username or password incorrect.
+                </div>
+            }
+            <form id="js-login" novalidate="" action="@Url.Action("Login", "Account")" method="post">
+                @Html.AntiForgeryToken()
+                <div class="form-group">
+                    <label class="form-label" for="username">Email (Username)</label>
+                    <input type="email" id="username" name="Email" class="form-control form-control-lg" placeholder="Enter Email Address" required>
+                    <div class="invalid-feedback">Email address is required</div>
+                    <div class="help-block">Your unique username to app</div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Enter Password" value="" required>
+                    <div class="invalid-feedback">Password is required</div>
+                    <div class="help-block">Your password</div>
+                </div>-->
+                @*<div class="form-group text-left">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="custom-control-input" id="rememberme">
+                            <label class="custom-control-label" for="rememberme"> Remember me for the next 30 days</label>
+                        </div>
+                    </div>*@
+
+                <!--<div class="row no-gutters">
+                    <a class="float-left mt-1 text-danger" href="../Account/Forgot"><strong> Forgot Password?</strong></a>
+                </div>
+
+                <div class="row no-gutters">-->
+                    @*<div class="col-lg-6 pr-lg-1 my-2">
+                        <button type="submit" class="btn btn-info btn-block btn-lg">Sign in with <i class="fab fa-google"></i></button>
+                    </div>*@
+                    <!--<div class="col-lg-6 pl-lg-1 my-2">
+                        <button id="js-login-btn" type="submit" class="btn btn-danger btn-block btn-lg">Secure login</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>-->
+
+@section Scripts {
+    <script>
+        $("#js-login-btn").click(function (event) {
+            debugger
+            // Fetch form to apply custom Bootstrap validation
+            var form = $("#js-login")
+            if (form[0].checkValidity() === false) {
+                event.preventDefault()
+                event.stopPropagation()
+            }
+            form.addClass('was-validated');
+            // Perform ajax submit here...
+        });
+    </script>
+}

@@ -1,0 +1,208 @@
+﻿@model IEnumerable<Common.ViewModels.UserAccount.UserVM>
+@{
+    ViewData["Title"] = "Manage Users";
+    ViewData["PageName"] = "ManageUsers";
+    ViewData["Category1"] = "Users";
+}
+@{
+    var currentuser = Common.Utilities.GeneralUtility.GetCurrentUserInfo(User);
+    var driverAccess = currentuser.Roles.Any(c => c == "Agent");
+}
+
+<div class="panel">
+    <div class="panel-hdr">
+        <h2 class="fw-700"> Users </h2>
+        <div class="panel-toolbar">
+            @if (!driverAccess)
+            {
+                <span data-toggle="modal" data-target="#manageUsersModal">
+                    <a href="javascript:void(0);" id="addBtn" class="btn btn-sm btn-primary mr-3" data-toggle="tooltip" data-placement="top" title="" data-original-title="Add User">
+                        <i class="fal fa-plus mr-1"></i> Add New User
+                    </a>
+                </span>
+            }
+            <a href="javascript:void(0);" onclick="location.reload();" class="btn btn-sm btn-warning refreshBtn" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh List">
+                <i class="fal fa-sync mr-1"></i> Refresh
+            </a>
+        </div>
+    </div>
+    <div class="panel-container show">
+        <div class="panel-content">
+            <!-- datatable Start -->
+            <table id="UserRecordsGrid" class="table table-bordered table-hover table-striped table-sm w-100">
+                <thead class="bg-primary-900">
+                    <tr>
+                        <th class="d-none" aria-label="custom filter : activate to sort column descending" aria-sort="ascending">custom filter <!--DO NOT REMOVE--></th>
+                        <th><i class="fal fa-user-plus mr-1"></i> User Role</th>
+                        <th><i class="fal fa-user mr-1"></i> Full Name</th>
+                        <th><i class="fal fa-envelope mr-1"></i> Email</th>
+                        <th><i class="fal fa-mobile mr-1"></i> Mobile </th>
+                        <th><i class="fal fa-toggle-on mr-1"></i> Is Active?</th>
+                        <th align="center"><i class="fal fa-bolt mr-1"></i> Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model != null && Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            if(item.Id != "75877a08-ce9b-4350-b1f6-55b76870f2ec")
+                    {
+                            <tr>
+                                <td class="d-none">@item.Active</td>
+                                <td align="center"><span class="badge badge-pill min-w-5 badge-success">@item.Roles.FirstOrDefault()</span></td>
+                                <td>@(item.FirstName + " " + item.LastName)</td>
+                                <td><a href="mailto:@item.Email">@item.Email</a></td>
+                                <td>@item.PrimaryPhoneNumber</td>
+                                <td align="center">
+                                    <div class="custom-control custom-switch">
+                                        <input data-id="@item.Id" type="checkbox" class="custom-control-input activeSwitch activeUser" id="@item.Id" @(item.Active ? "checked" : "")>
+                                        <label class="custom-control-label" for="@item.Id"></label>
+                                    </div>
+                                </td>
+                                <td align="center">
+                                    <span onclick="openModal('@item.Id')">
+                                        <a href="javascript:void(0);" class="editBtn btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Edit User">
+                                            <i class="fal fa-edit"></i> Edit
+                                        </a>
+                                    </span>
+                                    @if (item.Roles.FirstOrDefault() == "Driver")
+                                    {
+
+                                        <span onclick="openDriverModal('@item.Id')">
+                                            <a href="javascript:void(0);" class="manageDriveRouteBtn btn btn-xs btn-primary mr-2" data-toggle="tooltip" data-placement="top" data-original-title="Manage Driver Route">
+                                                <i class="fal fa-address-book"></i> Manage Driver Route
+                                            </a>
+                                        </span>
+                                    }
+                                </td>
+                            </tr>
+                    }
+
+                        }
+                    }
+                </tbody>
+            </table>
+            <!-- datatable End -->
+        </div>
+    </div>
+</div>
+<div id="manageDriveRouteDiv"></div>
+@section ScriptsBlock {
+    <partial name="/Views/Modal/_ManageUserModal.cshtml" />
+    <script>
+        $(document).ready(function () {
+            /* init datatables */
+            var tables = $('#UserRecordsGrid').DataTable();
+            // Custom Filter
+            $(document).on('change', '.customFilter', function () {
+                tables.columns(0).search(this.value).draw();
+            });
+            $('#UserRecordsGrid_filter').closest('div').append($('#customFilterUser').html());
+            $(".customFilter").val("true").trigger("change");
+            $("#addBtn").click(function (e) {
+                document.getElementById("formManageUserRoles").reset();
+                $("#btnSaveUser").html("<i class='fal fa-save mr-1'></i> Create");
+                $(".modal-title").text("Create User");
+                $("#UserId").val("0");
+            });
+
+        });
+        function openDriverModal(driverId) {
+            ilms.partialPageLoadingToElement(ilms.routers.ManageDriverRoute, { driverId: driverId }, "manageDriveRouteDiv", null, function (data) {
+                $("#driverId").val(driverId);
+                $("#ManageDriverRouteModal").modal('show');
+            }, true);
+        }
+
+        function openModal(userId) {
+            $(".modal-title").text("Update User");
+            $("#btnSaveUser").html("<i class='fal fa-sync mr-1'></i> Update");
+            $("#UserId").val("0");
+            var dataObject = { userId: userId };
+            let requestParam = dataObject;
+
+            ilms.ajaxPostCall(ilms.routers.GetUserInfo, requestParam, function (data) {
+                $("#UserId").val(data.id);
+                $("#FirstName").val(data.firstName);
+                $("#LastName").val(data.lastName);
+                $("#Email").val(data.email);
+                $("#PrimaryPhoneNumber").val(data.primaryPhoneNumber);
+                //$("#SecondaryPhoneNumber").val(data.secondaryPhoneNumber);
+                $("#Active").prop("checked", data.active) ? true : false;
+                //$("#Gender").val(data.gender);
+                if ('@(!driverAccess)'=="True") {
+                    $("#UserRole").val(data.roles[0]);
+                    $('#UserRole').attr("disabled", false);
+                    $('#HiddenUserRoleId').val(data.roles[0]);
+                }
+                else {
+                    $("#UserRole").val(data.roles[0]);
+                    $('#UserRole').attr("disabled", true);
+                    $('#HiddenUserRoleId').val(data.roles[0]);
+                }
+                if (data.driverLicense !== null && data.driverLicense !== '') {
+                    $("#DriverLicense").val(data.driverLicense);
+                    $("#DriverDetail").show();
+                }
+                else {
+                    $("#DriverDetail").hide();
+                    $("#DriverLicense").removeAttr('required');
+                }
+                if (data.emergencyContactName !== null && data.emergencyContactName !== '') {
+                    $("#EmergencyContactName").val(data.emergencyContactName);
+                    $("#Emergencycontact").show();
+                }
+                else {
+                    $("#Emergencycontact").hide();
+                    $("#EmergencyContactName").removeAttr('required');
+                }
+                if (data.emergencyContactNo !== null && data.emergencyContactNo !== '') {
+                    $("#EmergencyContactNo").val(data.emergencyContactNo);
+                    $("#Emergencyno").show();
+                }
+                else {
+                    $("#Emergencyno").hide();
+                    $("#EmergencyContactNo").removeAttr('required');
+                }
+                if (data.address !== null && data.address !== '') {
+                    $("#Address").val(data.address);
+                    $("#DriverDetail").show();
+                }
+                else {
+                    $("#DriverDetail").hide();
+                    $("#Address").removeAttr('required');
+                }
+                $("#manageUsersModal").modal('show');
+            });
+        }
+
+        $('.activeUser').change(function (e) {
+            let _that = this;
+            var _isActive = ($(this).is(':checked') == true ? "activate" : "deactivate");
+            ilms.showDecisionAlert("", "You want to " + _isActive + " User.", "info", "Yes", function () {
+                var recordID = $(_that).data('id');
+                var isActive = ($(_that).is(':checked') == true ? true : false);
+                // Update Record
+                var dataRequest = { status: isActive, id: recordID };
+                ilms.ajaxPostCall(ilms.routers.UpdateUserStatus, dataRequest, function (data) {
+                    if (data.success) {
+                        ilms.showAlertWithType('User is ' + _isActive + 'd successfully.', 'success');
+                        setTimeout(function () {
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        ilms.toggleSwitch(_that, !$(_that).is(':checked'), 'Active');
+                        ilms.showAlertWithType(data.error, 'error');
+                    }
+                });
+            }, function () { ilms.toggleSwitch(_that, !$(_that).is(':checked'), 'Active'); }, "No", true, true);
+        });
+
+        function TableReload() {
+            $("#UserRecordsGrid").DataTable().ajax.reload(null, false);
+        };
+    </script>
+
+
+}

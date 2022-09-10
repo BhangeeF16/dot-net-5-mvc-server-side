@@ -1,0 +1,162 @@
+﻿<div class="modal fade" id="manageUsersModal" tabindex="-1" data-backdrop="static" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary-900 p-2">
+                <h4 class="modal-title text-white">
+                    <span aria-hidden="true"><i class="fal fa-user mr-2"></i></span> User
+                    <small class="m-0 text-muted">
+
+                    </small>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="loader_provider" class="d-none">
+                    <div class="fs-xl color-danger-300 mb-1"><i class="fal fa-cog fa-spin mr-1"></i>Loading please wait...</div>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-striped bg-primary-500 progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                </div>
+                <form id="formManageUserRoles" class="needs-validation" novalidate>
+                    <input type="hidden" id="UserId" name="UserId" value="0" />
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="UserRole">User Role<span class="text-danger"> *</span></label>
+                            <input type="hidden" id="HiddenUserRoleId" name="UserRole" value="" />
+                            <select class="form-control form-control-sm fs-md" id="UserRole" name="UserRole" required>
+                                <option value="">- Please Select -</option>
+                                @foreach (var item in ViewBag.Roles)
+                                {
+                                    <option value="@item.Name">@item.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <div class="custom-control custom-checkbox mt-5">
+                                <input type="checkbox" class="custom-control-input" id="Active" name="Active" value="true" checked>
+                                <label class="custom-control-label" for="Active">Is Active?</label>
+                                <input name="Active" type="hidden" value="false">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="FirstName">First Name<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="FirstName" name="FirstName" required />
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="LastName">Last Name<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="LastName" required name="LastName">
+                        </div>
+                        @*<div class="col-lg-4 form-group">
+                                <label class="form-label" for="gender">Gender</label>
+                                <select class="form-control form-control-sm fs-md" id="Gender" name="Gender" required>
+                                    <option value="">- Please Select -</option>
+                                    <option value="Male">Male</option>
+                                    <option value="Female">Female</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>*@
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="Email">Email<span class="text-danger"> *</span></label>
+                            <input type="email" class="form-control form-control-sm fs-md" id="Email" name="Email" pattern="^[a-zA-Z0-9._+-]+@("@")[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required />
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="MobileNo">Mobile Number<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="PrimaryPhoneNumber" name="PrimaryPhoneNumber" im-insert="true" data-inputmask="'mask': '(999) 999-9999'" required min="10" max="10">
+                        </div>
+                        <!--<div class="col-lg-4 form-group">
+                        <label class="form-label" for="PhoneNo">Phone Number<span class="text-danger"> *</span></label>
+                        <input type="text" class="form-control form-control-sm fs-md" id="SecondaryPhoneNumber" name="SecondaryPhoneNumber" im-insert="true"  data-inputmask="'mask': '(999) 999-9999'" required>-->
+                        @*<span id="message"></span>*@
+                        <!--</div>-->
+                        <div class="col-lg-4 form-group" style="display:none" id="Emergencycontact">
+                            <label class="form-label" for="EmergencyContactName">Emergency Contact Name<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="EmergencyContactName" name="EmergencyContactName" required />
+                        </div>
+                        <div class="col-lg-4 form-group" style="display:none" id="Emergencyno">
+                            <label class="form-label" for="EmergencyContactNo">Emergency Contact No<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="EmergencyContactNo"  name="EmergencyContactNo" im-insert="true" data-inputmask="'mask': '(999) 999-9999'" required min="10" max="10">
+                        </div>
+                    </div>
+                    <div class="row" style="display:none" id="DriverDetail">
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="DriverLicense">Driver License<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="DriverLicense" name="DriverLicense" required />
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="Address">Address<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="Address" required name="Address">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCloseUserModal" class="btn btn-sm btn-danger" data-dismiss="modal"><span class="fal fa-times mr-1"></span>Close</button>
+                        <button type="button" id="btnSaveUser" class="btn btn-sm btn-success"><span class="fal fa-save mr-1"></span>Create</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/js/formplugins/inputmask/inputmask.bundle.js"></script>
+<script>
+    $(document).ready(function () {
+        $(":input").inputmask();
+    });
+
+    $("#UserRole").change(function (e) {
+        var Role = $(this).val();
+        if (Role.length > 0 && Role == 'Driver') {
+            $("#Emergencycontact").show();
+            $("#EmergencyContactName").attr('required', true);
+            $("#Emergencyno").show();
+            $("#EmergencyContactNo").attr('required', true);
+            $("#DriverDetail").show();
+            $("#DriverLicense").attr('required', true);
+            $("#Address").attr('required', true);
+        }
+        else {
+            $("#Emergencycontact").hide();
+            $("#EmergencyContactName").removeAttr('required');
+            $("#EmergencyContactName").val("");
+            $("#Emergencyno").hide();
+            $("#EmergencyContactNo").removeAttr('required');
+            $("#EmergencyContactNo").val("");
+            $("#DriverDetail").hide();
+            $("#DriverLicense").removeAttr('required');
+            $("#DriverLicense").val("");
+            $("#Address").removeAttr('required');
+            $("#Address").val("");
+        }
+    });
+
+
+    $(document).off('click', "#btnSaveUser").on('click', "#btnSaveUser", function (e) {
+        if (ilms.validateForm($('#formManageUserRoles'))) {
+            let requestParam = ilms.getFormData($('#formManageUserRoles'));
+            requestParam.UserRoles = [];
+            requestParam.UserRoles[0] = {
+                RoleID: $('#UserRole').val()
+            }
+            requestParam["Active"] = $('#Active').is(":checked");
+            ilms.ajaxPostCall(ilms.routers.UpsertUser, requestParam, function (data) {
+                if (data.success) {
+                    ilms.showAlertWithType("User Created / Updated Successfully.", "success", 3000);
+                    setTimeout(function () {
+                        // Load the page
+                        location.reload();
+                    }, 2000);
+                } else {
+                    ilms.showAlertWithType(data.error, "error", 3000);
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+</script>

@@ -1,0 +1,87 @@
+﻿
+<div class="modal fade" id="manageRolesModal" tabindex="-1" data-backdrop="static" role="dialog" aria-modal="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-primary-900 p-2">
+                <h4 class="modal-title text-white">
+                    <span aria-hidden="true"><i class="fa fa-user-plus mr-2"></i></span> Roles
+                    <small class="m-0 text-muted">
+
+                    </small>
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                </button>
+            </div>
+            <form id="formManageUserRoles" class="needs-validation" novalidate>
+                <div class="modal-body">
+                    <div id="loader_provider" class="d-none">
+                        <div class="fs-xl color-danger-300 mb-1"><i class="fal fa-cog fa-spin mr-1"></i>Loading please wait...</div>
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped bg-primary-500 progress-bar-animated" role="progressbar" style="width: 100%" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="RoleId" name="RoleId" value="0" />
+                    <div class="row">
+                        <div class="col-lg-4 form-group">
+                            <label class="form-label" for="NewRole">Role<span class="text-danger"> *</span></label>
+                            <input type="text" class="form-control form-control-sm fs-md" id="RoleName" name="RoleName" required />
+                        </div>
+                        <div class="col-lg-4 form-group">
+                            <div class="custom-control custom-checkbox mt-5">
+                                <input type="checkbox" class="custom-control-input" id="cbActive" checked="">
+                                <label class="custom-control-label" for="cbActive">Is Active?</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="btnCloseUserModal" class="btn btn-sm btn-danger" data-dismiss="modal"><span class="fal fa-times mr-1"></span>Close</button>
+                        <button type="button" id="btnSaveRole" class="btn btn-sm btn-success"><span class="fal fa-save mr-1"></span>Create</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/formplugins/inputmask/inputmask.bundle.js"></script>
+<script>
+    $(document).ready(function () {
+        $(":input").inputmask();
+    });
+
+    let $dataForm = $('#formManageUserRoles');
+    $(document).off('click', "#btnSaveRole").on('click', "#btnSaveRole", function (e) {
+        if (ilms.validateForm($dataForm)) {
+            var requestParam = {
+                Id: $("#RoleId").val(),
+                Name: $("#RoleName").val(),
+                Active: $("#cbActive").is(":checked")
+            };
+            ilms.ajaxPostCall(ilms.routers.UpsertRole, requestParam, function (data) {
+                if (data.success) {
+                    document.getElementById("formManageUserRoles").reset();
+                    ilms.showAlertWithType("Role Created / Updated Successfully.", "success", 3000);
+                    $("#manageRolesModal").modal('hide');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                } else {
+                    ilms.toggleSwitch($("#cbActive"), !$("#cbActive").is(":checked"));
+                    ilms.showAlertWithType(data.error, 'error');
+                }
+            });
+        }
+        else {
+            return false;
+        }
+    });
+
+    $(document).on("click", "[type='checkbox']", function (e) {
+        if (this.checked) {
+            $(this).attr("value", "true");
+        } else {
+            $(this).attr("value", "false");
+        }
+    });
+
+</script>

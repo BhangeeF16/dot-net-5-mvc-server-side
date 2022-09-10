@@ -1,0 +1,135 @@
+@{
+    ViewData["Title"] = "Forget Password";
+    ViewData["PageName"] = "page_forget";
+}
+
+
+
+<div class="row m-0 h-100">
+    <div class="hidden-md-down col-md-12 col-lg-6 col-xl-7" style="background: url(/img/backgrounds/loginbg.jpg) no-repeat center; background-size: cover;">
+
+    </div>
+    <div class="col-md-12 col-lg-6 col-xl-5">
+        <div class="login d-flex align-items-center py-5 h-100">
+            <div class="container px-4 px-sm-0">
+                <div class="row align-items-center">
+                    <div class="col-sm-12 col-md-8 col-lg-7 col-xl-7 col-xxl-6 m-auto">
+                        <div class="mb-2 text-center w-100">
+                            <a href="/">
+                                <img src="/img/logo.png" width="200" class="flex-wrap mb-2" alt="logo" aria-roledescription="logo">
+                            </a>
+                        </div>
+                        <div class="card p-4 rounded-plus">
+                            <form id="ForgotPassForm">
+                                <div class="form-group">
+                                    <label class="form-label" for="lostaccount">Email <span class="text-danger">*</span></label>
+                                    <input type="email" id="email" name="email" class="form-control" placeholder="Email" pattern="^[a-zA-Z0-9._+-]+@("@")[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required>
+                                    <div class="invalid-feedback">No, you missed this one.</div>
+                                    <div class="help-block">We will email you the instructions to reset your password</div>
+                                </div>
+                                <div class="row no-gutters">
+                                    <div class="col-12 ml-auto text-right">
+                                        <button id="btnForgotPass" type="button" class="btn btn-primary">Recover</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="mt-5">
+                            Remember Password? <a href="/"><strong>Login</strong></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<div class="row">
+    <div class="col-xl-12">
+        <h2 class="fs-xxl fw-500 mt-4 text-white text-center">
+            <small class="h3 fw-300 mt-3 mb-5 text-white opacity-60 hidden-sm-down">
+                Not a problem, happens to the best of us. Just use the form below to reset it!
+            </small>
+        </h2>
+    </div>
+    <div class="col-sm-12 col-md-10 col-xl-8 ml-auto mr-auto">
+        <div class="card p-4 rounded-plus bg-faded">
+            <form id="js-login">
+                <div class="form-group">
+                    <label class="form-label" for="lostaccount">Your username or email</label>
+                    <input type="email" id="lostaccount" class="form-control" placeholder="Recovery email" pattern="^[a-zA-Z0-9._+-]+@("@")[a-zA-Z0-9.-]+\.[a-zA-Z]{2,9}$" required>
+                    <div class="invalid-feedback">No, you missed this one.</div>
+                    <div class="help-block">We will email you the instructions</div>
+                </div>
+                <div class="row no-gutters">
+                    <div class="col-md-4 ml-auto text-right">
+                        <button id="js-login-btn" type="button" class="btn btn-danger">Recover</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>*@
+@*<div class="row">
+        <div class="col-xl-12">
+            <h2 class="fs-xxl fw-500 mt-4 text-white text-center">
+                "My dog ate my password"
+                <small class="h3 fw-300 mt-3 mb-5 text-white opacity-60 hidden-sm-down">
+                    Not a problem, happens to the best of us. Just use the form below to reset it!
+                </small>
+            </h2>
+        </div>
+        <div class="col-xl-6 ml-auto mr-auto">
+            <div class="card p-4 rounded-plus bg-faded">
+                <form id="js-login" novalidate="" {{#if app-flavor-subscript}} action="intel_introduction.html" } else { } action="intel_analytics_dashboard.html">
+                    <div class="form-group">
+                        <label class="form-label" for="lostaccount">Your username or email</label>
+                        <input type="email" id="lostaccount" class="form-control" placeholder="Recovery email" required>
+                        <div class="invalid-feedback">No, you missed this one.</div>
+                        <div class="help-block">We will email you the instructions</div>
+                    </div>
+                    <div class="row no-gutters">
+                        <div class="col-md-4 ml-auto text-right">
+                            <button id="js-login-btn" type="submit" class="btn btn-danger">Recover</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>*@
+@section scripts {
+    <script>
+        //$("#js-login-btn").click(function (event) {
+        //    // Fetch form to apply custom Bootstrap validation
+        //    var form = $("#js-login")
+        //    if (form[0].checkValidity() === false) {
+        //        event.preventDefault()
+        //        event.stopPropagation()
+        //    }
+        //    form.addClass('was-validated');
+        //    // Perform ajax submit here...
+        //});
+
+        $(document).off('click', "#js-login-btn").on('click', "#js-login-btn", function (e) {
+            if (ilms.validateForm($('#js-login'))) {
+                let requestParam = ilms.getFormData($('#js-login'));
+                var dataObject = { Email: $("#lostaccount").val()};
+                requestParam = dataObject;
+                //requestParam = $("#lostaccount").val();
+                ilms.ajaxPostCall(ilms.routers.Forgot, requestParam, function (data) {
+                    if (data.success) {
+                        ilms.showAlertWithType("The link has been sent, please check your email to reset your password.", "success", 3000);
+                        setTimeout(function () {
+                            // Load the page
+                            location.reload();
+                        }, 2000);
+                    } else {
+                        ilms.showAlertWithType(data.error, "error", 5000);
+                    }
+                });
+            }
+            else {
+                return false;
+            }
+        });
+    </script>
+}

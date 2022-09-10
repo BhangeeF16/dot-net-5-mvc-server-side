@@ -1,0 +1,124 @@
+﻿@model IEnumerable<Common.ViewModels.UserAccount.RoleVM>
+@{
+    ViewData["Title"] = "User Roles";
+    ViewData["PageName"] = "UserRoles";
+    ViewData["Category1"] = "Users";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div id="panel-1" class="panel">
+            <div class="panel-hdr">
+                <h2 class="text-truncate fs-xl">
+                    Manage Roles
+                </h2>
+                <div class="panel-toolbar">
+                    <span data-toggle="modal" data-target="#manageRolesModal">
+                        <a href="javascript:void(0);" id="addBtn" class="btn btn-sm  btn-success shadow-0 mr-3" data-toggle="tooltip" data-placement="top" title="Add New Role">
+                            <i class="fal fa-plus mr-1"></i> Add Role
+                        </a>
+                    </span>
+                    <a href="javascript:void(0);" onclick="location.reload();" class="btn btn-sm  btn-warning shadow-0 refreshBtn" data-toggle="tooltip" data-placement="top" title="Refresh List">
+                        <i class="fal fa-sync mr-1"></i> Refresh
+                    </a>
+                </div>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    <!-- datatable Start -->
+                    <table id="rolesGrid" class="table table-bordered table-hover table-striped table-sm w-100">
+                        <thead class="bg-primary-700">
+                            <tr>
+                                <th class="d-none">custom filter <!--DO NOT REMOVE--></th>
+                                <th><i class="fal fa-user-plus mr-1"></i> Role</th>
+                                <th><i class="fal fa-toggle-on mr-1"></i> Is Active?</th>
+                                <th align="center"><i class="fal fa-bolt mr-1"></i> Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model != null && Model.Count() > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <tr>
+                                        <td class="d-none">isActive</td>
+                                        <td align="center">@item.Name</td>
+                                        <td align="center">
+                                            <div class="custom-control custom-switch">
+                                                <input data-id="@item.Id" type="checkbox" class="custom-control-input activeSwitch" id="@item.Id" @(item.IsActive ? "checked" : "") data-role="@Newtonsoft.Json.JsonConvert.SerializeObject(item)">
+                                                <label class="custom-control-label" for="@item.Id"></label>
+                                            </div>
+                                        </td>
+                                        <td align="center">
+                                            <span class="editRole" data-role="@Newtonsoft.Json.JsonConvert.SerializeObject(item)">
+                                                <a href="javascript:void(0);"
+                                                   class="editBtn btn btn-xs btn-success" data-toggle="tooltip" data-placement="top" title="Edit Role">
+                                                    <i class="fal fa-edit"></i> Edit
+                                                </a>
+                                            </span>
+
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <!-- datatable End -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section ScriptsBlock {
+    <partial name="/Views/Modal/_ManageRolesModal.cshtml" />
+    <script>
+        $(document).ready(function () {
+            /* init datatables */
+            $('#rolesGrid').dataTable();
+        });
+
+        $("#addBtn").click(function (e) {
+            document.getElementById("formManageUserRoles").reset();
+            $("#btnSaveRole").text("Create");
+            $(".modal-title").text("Create Role");
+            $("#RoleName").prop("readonly", false);
+        });
+
+        $(".editRole").click(function () {
+            var role = $(this).data('role');
+            if (role) {
+                $("#RoleId").val(role.Id);
+                $("#RoleName").val(role.Name);
+                $("#cbActive").prop("checked", role.Active);
+                //$("#RoleName").prop("readonly", true);
+                $(".modal-title").text("Update Role");
+                $("#btnSaveRole").text("Update");
+                $("#manageRolesModal").modal('show');
+
+            }
+        });
+
+        $('input:checkbox').change(function (e) {
+            var role = $(this).data('role');
+            var checked = $(this).is(":checked");
+            if (role) {
+                role.Active = checked;
+                var _that = this;
+                var _isActive = checked ? "activate" : "deactivate";
+                ilms.showDecisionAlert("", "You want to " + _isActive + " Role.", "info", "Yes", function () {
+                    ilms.ajaxPostCall(ilms.routers.UpdateRoleStatus, role, function (data) {
+                        if (data.success) {
+                            ilms.showAlertWithType('Role is ' + _isActive + 'd successfully.', 'success');
+                            setTimeout(function () {
+                                location.reload();
+                            }, 2000);
+                        } else {
+                            ilms.toggleSwitch(_that, !$(_that).is(':checked'), 'Active');
+                            ilms.showAlertWithType(data.error, 'error');
+                        }
+                    });
+                }, function () { ilms.toggleSwitch(_that, !$(_that).is(':checked'), 'Active'); }, "No", true, true);
+            }
+        });
+    </script>
+}
+

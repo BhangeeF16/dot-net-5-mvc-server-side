@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Common.ViewModels.AppSetting.AppSettingVM>
+@{
+    ViewData["Title"] = "System Settings";
+    ViewData["PageName"] = "SystemSetting";
+    ViewData["Category1"] = "System Settings";
+}
+<div class="row">
+    <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div id="panel-1" class="panel">
+            <div class="panel-hdr">
+                <h2 class="text-truncate text-info fs-xl">
+                    <i class="fal fa-cog"></i>&nbsp;
+                    System Settings Variables
+                </h2>
+                <div class="panel-toolbar">
+                    @* <button class="btn btn-panel waves-effect waves-themed" data-action="panel-collapse" data-toggle="tooltip" data-offset="0,10" data-original-title="Collapse"></button>*@
+                </div>
+            </div>
+            <div class="panel-container show">
+                <div class="panel-content">
+                    @*<div class="alert alert-warning alert-dismissible fade show mb-5" role="alert">
+                            Press the clear cache button to reset all the resources in the system.
+                            <button id="ClearCacheBtn" type="button" class="btn ml-1 btn-xs btn-primary">
+                                Clear Cache
+                            </button>
+                        </div>*@
+                    <div class="alert alert-info alert-dismissible fade show mb-5" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true"><i class="fal fa-times-circle"></i></span>
+                        </button>
+                        If you are not familiar with these settings, please contact support.
+                    </div>
+                    <form>
+                        <div class="row" id="systemSettingsDiv">
+                            @if (Model != null && Model.Count() > 0)
+                            {
+                                foreach (var item in Model)
+                                {
+                                    <div class="col-lg-6 col-xl-4 col-md-6 col-sm-6 col-xs-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="@item.Name">
+                                                @item.Label
+                                                <button type="button" class="btn btn-outline-primary btn-xs btn-icon rounded-circle waves-effect waves-themed ml-1" data-toggle="popover" data-trigger="hover" data-placement="right" title="" data-content="@item.Description"><i class="fal fa-question"></i></button>
+                                            </label>
+                                            <input type="text" id="@item.ID" value="@item.Value" name="@item.Name.Replace(" ","_")" class="form-control form-control form-control-lg">
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        </div>
+                    </form>
+                </div>
+                <div class="d-flex align-items-center panel-content py-2 rounded-bottom bg-faded border-faded border-left-0 border-right-0 border-bottom-0 text-muted">
+                    @*<button class="btn btn-danger btn-sm ml-auto"><span class="fal fa-times mr-1"></span> Cancel</button>*@
+                    <a href="javascript:void(0);" class="btn btn-success btn-sm ml-auto updateAppSettings"><span class="fal fa-save mr-1"></span> Update</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section ScriptsBlock
+{
+    <script>
+
+        $(document).off('click', '.updateAppSettings').on('click', '.updateAppSettings', function (e) {
+
+            e.preventDefault();
+            // create obj
+            let appSettings = [];
+            $('#systemSettingsDiv input').each(function () {
+                appSettings.push({ "ID": this.id, "Value": this.value });
+            });
+            if (myapp_config.debugState) {
+                console.log(appSettings);
+            }
+            ilms.ajaxPostCall(ilms.routers.UpdateAppSetting, { appSettings }, function (data) {
+                if (data) {
+                    ilms.showAlertWithType('App settings updated successfully.', 'success', 2000)
+                } else {
+                    ilms.showAlertWithType('Error occur while updating.', 'error', 2000)
+                }
+            }, this);
+
+        });
+
+    </script>
+}

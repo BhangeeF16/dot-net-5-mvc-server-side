@@ -1,0 +1,167 @@
+﻿@{
+    ViewData["Title"] = "Checkout";
+    Layout = "../Shared/_LayoutNoNavBar.cshtml";
+}
+
+<div class="page-wrapper auth">
+    <div class="page-inner">
+        <div class="page-content-wrapper bg-transparent m-0">
+
+            <div class="flex-1" style="background: url(img/svg/coffeShop.jpg) no-repeat center bottom fixed; background-size: cover;">
+                <div class="container">
+                    <div class="height-10 w-100">
+                        <div class="page-logo width-mobile-auto m-0 align-items-center justify-content-center p-0 bg-transparent bg-img-none shadow-0 height-9 border-0">
+                            <a href="javascript:void(0)" class="page-logo-link press-scale-down d-flex align-items-center">
+                                <img src="https://uploads-ssl.webflow.com/5e5fd80427932172e564a883/5e5fd804279321e59c64a986_ProjectionHub-Logo.svg" alt="SmartAdmin WebApp" aria-roledescription="logo" style="width: 194px !important; height: auto !important;">
+
+                            </a>
+                        </div>
+
+                    </div>
+                    <div class="row justify-content-center">
+
+                        <div class="col-sm-12 col-md-12">
+                            <div class="card p-4 rounded-plus shadow-4 mb-3">
+                                <div class="row">
+                                    <div class="col-12">
+                                        <h1 class="fs-xxl fw-700 mb-3 d-sm-block text-center" style="color: #000;">
+                                            Complete your purchase
+                                        </h1>
+                                        <div class="alert alert-danger alert-dismissible fade show mt-4" role="alert">
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true"><i class="fal fa-times"></i></span>
+                                            </button>
+                                            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-4 py-3 order-md-2 rounded order-lg-2 order-xl-2 bg-warning" style="position: relative;">
+                                        <h1 class=" fs-xxl fw-500 mb-3 d-sm-block text-center">
+                                            Payment Summary
+                                        </h1>
+                                        <div class="summaryItemsContainer">
+
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h2 class=" fs-xl fw-500">Coffee Shop Template</h2>
+                                                <h4 class=" fs-xl fw-500">$99</h4>
+                                            </div>
+                                            <hr>
+                                            <div class="d-flex align-items-center justify-content-between">
+                                                <h3 class=" fs-xl fw-500">Total</h3>
+                                                <h4 class=" fs-xl fw-500">$99</h4>
+                                            </div>
+                                        </div>
+                                        <div class="text-center">
+                                            <img src="https://www.clickfunnels.com/images/credit-only.png" class="img-fluid">
+                                        </div>
+
+                                    </div>
+                                    <div class="col-md-8 order-md-1 order-lg-1 order-xl-1">
+                                        <form>
+                                            <div class="row">
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="email">Email:</label>
+                                                        <input type="email" id="email" class="form-control form-control-md" placeholder="your email">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="fullName">Full Name</label>
+                                                        <input type="text" id="fullName" class="form-control form-control-md" placeholder="Your full name">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="phoneNumber">Phone Number</label>
+                                                        <input type="text" id="phoneNumber" class="form-control form-control-md" placeholder="Phone Number">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="cityName">City Name</label>
+                                                        <input type="text" id="cityName" class="form-control form-control-md" placeholder="City Name">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-12 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="fullAddress">Full Address</label>
+                                                        <input type="text" id="fullAddress" class="form-control form-control-md" placeholder="Full Address">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-8 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="stateprovince">State / Province</label>
+                                                        <input type="text" id="stateprovince" class="form-control form-control-md" placeholder="State / Province">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="zipcode">Zip code</label>
+                                                        <input type="text" id="zipcode" class="form-control form-control-md" placeholder="Zip code">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="stateprovince">Select Countr</label>
+                                                        <select class="form-control form-control-md" id="stateprovince">
+                                                            <option>United State</option>
+                                                            <option>Canada</option>
+                                                            <option>United Kingdom</option>
+                                                            <option>Ireland</option>
+                                                            <option>Australia</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="creditCardNumber">Credit Card Number</label>
+                                                        <input type="text" id="creditCardNumber" class="form-control form-control-md" placeholder="Credit Card Number">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="expiry">Expiry *</label>
+                                                        <input type="text" id="expiry" class="form-control form-control-md" placeholder="MM / YY">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6 my-2">
+                                                    <div class="form-group mb-0">
+                                                        <label class="form-label" for="cvcCode">CVC Code</label>
+                                                        <input type="text" id="cvcCode" class="form-control form-control-md" placeholder="CVC">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row justify-content-center">
+                                                <div class="col-8 text-center my-2">
+                                                    <button type="button" class="btn btn-warning btn-block btn-lg">Complete Order</button>
+                                                </div>
+
+                                            </div>
+                                        </form>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,24 @@
+{
+  "version": "4.5",
+  "lists": [
+    {
+      "title": "Dashboard",
+      "href": "/Home/Index",
+      "icon": "fal fa-home",
+      "roles": [ "Admin" ]
+    },
+    {
+      "title": "Coupans",
+      "icon": "fal fa-tag",
+      "href": "/Users/ManageUsers",
+      "roles": [ "Admin" ]
+    },
+    {
+      "title": "System Settings",
+      "icon": "fal fa-cog",
+      "href": "/Users/SystemSetting",
+      "roles": [ "Admin" ]
+    }
+
+  ]
+}
